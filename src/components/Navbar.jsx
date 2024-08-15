@@ -5,7 +5,7 @@ const Navbar = () => {
     <div className="navbar sm:w-10/12 mx-auto ">
       <div className="flex-1">
         <Link to={"/"} className="font-bold text-3xl">
-          Shop Ease
+          Shop <span className="text-yellow-500">Ease</span>
         </Link>
       </div>
       <div className="flex-none">
