@@ -1,10 +1,69 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { TbFidgetSpinner } from "react-icons/tb";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import { AuthContext } from "../providers/AuthProvider";
+
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const { signIn, googleLogin, reload, setReload } = useContext(AuthContext);
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+    await signIn(email, password)
+      .then((result) => {
+        setLoading(false);
+
+        Swal.fire({
+          icon: "success",
+          title: "Login Successful",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        navigate("/");
+
+        return setReload(!reload);
+      })
+      .catch((error) => {
+        setLoading(false);
+        if (error.message) {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: "Invalid Email or Password !",
+          });
+        }
+      });
+  };
+  const handleGoogleLogin = () => {
+    googleLogin()
+      .then((result) => {
+        setLoading(false);
+        Swal.fire({
+          icon: "success",
+          title: "Google Login Successful",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        navigate("/");
+      })
+      .catch((error) => {
+        setLoading(false);
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: "Google Login Failed",
+        });
+      });
+  };
 
   return (
     <div>
@@ -32,7 +91,7 @@ const Login = () => {
           </div>
           <div className="md:flex font-poppins">
             <div className="w-full max-w-md mx-auto p-8 space-y-3 rounded-xl md:w-2/3">
-              <form className="space-y-6">
+              <form className="space-y-6" onSubmit={handleLogin}>
                 <div className="space-y-1 text-sm">
                   <label className="block ">Email</label>
                   <input
@@ -82,6 +141,7 @@ const Login = () => {
               </div>
               <div className="flex justify-center space-x-4">
                 <button
+                  onClick={() => handleGoogleLogin()}
                   aria-label="Login with Google"
                   type="button"
                   className="flex items-center justify-center w-full p-4 space-x-4 border rounded-md focus:ring-2 focus:ring-offset-1 border-yellow-500 hover:bg-yellow-500 hove:text-white"

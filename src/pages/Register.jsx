@@ -1,11 +1,68 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { TbFidgetSpinner } from "react-icons/tb";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AuthContext } from "../providers/AuthProvider";
+import Swal from "sweetalert2";
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const { createUser, reload, setReload } = useContext(AuthContext);
+
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const email = e.target.email.value;
+    const password = e.target.password.value;
+
+    if (password.length < 6) {
+      setLoading(false);
+      return Swal.fire({
+        position: "top-end",
+        icon: "error",
+        title: "Password must be at least 6 characters long",
+        showConfirmButton: false,
+        timer: 1500,
+      });
+    } else {
+      await createUser(email, password)
+        .then((result) => {
+          Swal.fire({
+            icon: "success",
+            title: "Registration Successful",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          setLoading(false);
+          setReload(!reload);
+          navigate("/");
+        })
+        .catch((error) => {
+          setLoading(false);
+          if (error.code == "auth/email-already-in-use") {
+            Swal.fire({
+              position: "top-end",
+              icon: "error",
+              title: "Email is already in use",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          } else {
+            Swal.fire({
+              position: "top-end",
+              icon: "error",
+              title: `${error.message}`,
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          }
+        });
+    }
+  };
 
   return (
     <>
@@ -29,20 +86,7 @@ const Register = () => {
         </div>
         <div className="md:flex justify-center items-center font-poppins">
           <div className="w-full max-w-md mx-auto p-8 space-y-3 rounded-xl md:w-2/3">
-            <form className="space-y-6">
-              <div className="space-y-1 text-sm">
-                <label htmlFor="username" className="block">
-                  Username
-                </label>
-                <input
-                  required
-                  type="text"
-                  name="username"
-                  id="username"
-                  placeholder="Username"
-                  className="w-full px-4 py-3 rounded-md input border-yellow-500 border"
-                />
-              </div>
+            <form onSubmit={handleRegister} className="space-y-6">
               <div className="space-y-1 text-sm">
                 <label className="block ">Email</label>
                 <input
