@@ -31,7 +31,7 @@ const Login = () => {
             </div>
           </div>
           <div className="md:flex font-poppins">
-            <div className="w-full max-w-md mx-auto p-8 space-y-3 rounded-xl md:w-1/2">
+            <div className="w-full max-w-md mx-auto p-8 space-y-3 rounded-xl md:w-2/3">
               <form className="space-y-6">
                 <div className="space-y-1 text-sm">
                   <label className="block ">Email</label>
