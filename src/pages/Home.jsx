@@ -10,6 +10,7 @@ const Home = () => {
   const [sortPrice, setSortPrice] = useState("");
   const [sortDate, setSortDate] = useState("");
   const [brand, setBrand] = useState("");
+  const [category, setCategory] = useState("");
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -28,7 +29,7 @@ const Home = () => {
     fetch(
       `${
         import.meta.env.VITE_SERVER
-      }/products?search=${search}&page=${currentPage}&sortPrice=${sortPrice}&sortDate=${sortDate}&brand=${brand}`
+      }/products?search=${search}&page=${currentPage}&sortPrice=${sortPrice}&sortDate=${sortDate}&brand=${brand}&category=${category}`
     )
       .then((res) => res.json())
       .then((data) => {
@@ -40,7 +41,7 @@ const Home = () => {
         setLoading(false);
         console.log(err);
       });
-  }, [search, currentPage, sortPrice, sortDate, brand]);
+  }, [search, currentPage, sortPrice, sortDate, brand, category]);
 
   const pages = [...Array(totalPages).keys()].map((element) => element + 1);
 
@@ -114,6 +115,29 @@ const Home = () => {
             <option value="Nintendo">Nintendo</option>
             <option value="Razer">Razer</option>
             <option value="Logitech">Logitech</option>
+          </select>
+
+          <select
+            value={category}
+            className="input input-bordered"
+            onChange={(e) => setCategory(e.target.value)}
+          >
+            <option value="">Select Category</option>
+            <option value="Mobile Phones">Mobile Phones</option>
+            <option value="Headphones">Headphones</option>
+            <option value="Laptops">Laptops</option>
+            <option value="Wearables">Wearables</option>
+            <option value="Cameras">Cameras</option>
+            <option value="Televisions">Televisions</option>
+            <option value="Gaming Consoles">Gaming Consoles</option>
+            <option value="Home Appliances">Home Appliances</option>
+            <option value="Tablets">Tablets</option>
+            <option value="Accessories">Accessories</option>
+            <option value="Storage">Storage</option>
+            <option value="Speakers">Speakers</option>
+            <option value="E-readers">E-readers</option>
+            <option value="Drones">Drones</option>
+            <option value="Smart Home">Smart Home</option>
           </select>
         </div>
 
