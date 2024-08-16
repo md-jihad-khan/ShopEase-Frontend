@@ -7,7 +7,9 @@ import { FaSearch } from "react-icons/fa";
 const Home = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [sortOption, setSortOption] = useState("");
+  const [sortPrice, setSortPrice] = useState("");
+  const [sortDate, setSortDate] = useState("");
+  const [brand, setBrand] = useState("");
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -26,7 +28,7 @@ const Home = () => {
     fetch(
       `${
         import.meta.env.VITE_SERVER
-      }/products?search=${search}&page=${currentPage}&sort=${sortOption}`
+      }/products?search=${search}&page=${currentPage}&sortPrice=${sortPrice}&sortDate=${sortDate}&brand=${brand}`
     )
       .then((res) => res.json())
       .then((data) => {
@@ -38,7 +40,7 @@ const Home = () => {
         setLoading(false);
         console.log(err);
       });
-  }, [search, currentPage, sortOption]);
+  }, [search, currentPage, sortPrice, sortDate, brand]);
 
   const pages = [...Array(totalPages).keys()].map((element) => element + 1);
 
@@ -65,19 +67,57 @@ const Home = () => {
             </button>
           </label>
         </form>
+        <div className="mt-4 flex gap-4">
+          <select
+            className="input input-bordered"
+            onChange={(e) => {
+              setSortPrice(e.target.value);
+            }}
+          >
+            <option value="">Price</option>
+            <option value="price_asc">Price: Low to High</option>
+            <option value="price_desc">Price: High to Low</option>
+          </select>
+          <select
+            className="input input-bordered"
+            onChange={(e) => setSortDate(e.target.value)}
+          >
+            <option value="">Sort by Date</option>
+            <option value="date_desc">Date Added: Newest First</option>
+          </select>
 
-        <select
-          className="input input-bordered"
-          onChange={(e) => {
-            setSortOption(e.target.value);
-          }}
-        >
-          <option value="">Sort by</option>
-          <option value="price_asc">Price: Low to High</option>
-          <option value="price_desc">Price: High to Low</option>
-        </select>
+          <select
+            value={brand}
+            className="input input-bordered"
+            onChange={(e) => setBrand(e.target.value)}
+          >
+            <option value="">Select Brand</option>
+            <option value="Apple">Apple</option>
+            <option value="Samsung">Samsung</option>
+            <option value="Sony">Sony</option>
+            <option value="Dell">Dell</option>
+            <option value="HP">HP</option>
+            <option value="Canon">Canon</option>
+            <option value="Microsoft">Microsoft</option>
+            <option value="LG">LG</option>
+            <option value="Beats">Beats</option>
+            <option value="Amazon">Amazon</option>
+            <option value="Fitbit">Fitbit</option>
+            <option value="Nikon">Nikon</option>
+            <option value="OnePlus">OnePlus</option>
+            <option value="Dyson">Dyson</option>
+            <option value="GoPro">GoPro</option>
+            <option value="Roku">Roku</option>
+            <option value="JBL">JBL</option>
+            <option value="Garmin">Garmin</option>
+            <option value="DJI">DJI</option>
+            <option value="Nintendo">Nintendo</option>
+            <option value="Razer">Razer</option>
+            <option value="Logitech">Logitech</option>
+          </select>
+        </div>
 
-        {products.length == 0 && (
+        {!loading && products.length === 0 && (
           <p className="text-center mt-16 text-2xl">
             The Product is not available
           </p>
