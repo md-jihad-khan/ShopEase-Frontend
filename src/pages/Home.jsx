@@ -11,6 +11,8 @@ const Home = () => {
   const [sortDate, setSortDate] = useState("");
   const [brand, setBrand] = useState("");
   const [category, setCategory] = useState("");
+  const [minPrice, setMinPrice] = useState("");
+  const [maxPrice, setMaxPrice] = useState("");
   const [search, setSearch] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -29,7 +31,7 @@ const Home = () => {
     fetch(
       `${
         import.meta.env.VITE_SERVER
-      }/products?search=${search}&page=${currentPage}&sortPrice=${sortPrice}&sortDate=${sortDate}&brand=${brand}&category=${category}`
+      }/products?search=${search}&page=${currentPage}&sortPrice=${sortPrice}&sortDate=${sortDate}&brand=${brand}&category=${category}&minPrice=${minPrice}&maxPrice=${maxPrice}`
     )
       .then((res) => res.json())
       .then((data) => {
@@ -41,7 +43,16 @@ const Home = () => {
         setLoading(false);
         console.log(err);
       });
-  }, [search, currentPage, sortPrice, sortDate, brand, category]);
+  }, [
+    search,
+    currentPage,
+    sortPrice,
+    sortDate,
+    brand,
+    category,
+    minPrice,
+    maxPrice,
+  ]);
 
   const pages = [...Array(totalPages).keys()].map((element) => element + 1);
 
@@ -68,7 +79,7 @@ const Home = () => {
             </button>
           </label>
         </form>
-        <div className="mt-4 flex gap-4">
+        <div className="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 px-2 justify-evenly gap-4">
           <select
             className="input input-bordered"
             onChange={(e) => {
@@ -139,6 +150,22 @@ const Home = () => {
             <option value="Drones">Drones</option>
             <option value="Smart Home">Smart Home</option>
           </select>
+
+          <input
+            className="input input-bordered"
+            type="number"
+            value={minPrice}
+            onChange={(e) => setMinPrice(e.target.value)}
+            placeholder="Min Price"
+          />
+
+          <input
+            className="input input-bordered"
+            type="number"
+            value={maxPrice}
+            onChange={(e) => setMaxPrice(e.target.value)}
+            placeholder="Max Price"
+          />
         </div>
 
         {!loading && products.length === 0 && (
