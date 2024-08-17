@@ -35,9 +35,9 @@ yarn install
 
 ### Running the Project Locally:
 
-npm install
+npm run dev
 # or
-yarn install
+yarn run dev
 
 
 To start the frontend development server, run:
