@@ -54,12 +54,12 @@ const Home = () => {
     maxPrice,
   ]);
 
-  const pages = [...Array(totalPages).keys()].map((element) => element + 1);
+  let pages = [...Array(totalPages).keys()].map((element) => element + 1);
 
   return (
-    <>
+    <div>
       <div className="container mx-auto">
-        <div className="h-20 relative z-50 w-full">
+        <div className="h-20  relative z-50 w-full">
           <Navbar></Navbar>
         </div>
 
@@ -258,7 +258,7 @@ const Home = () => {
         </div>
       </div>
       <Footer />
-    </>
+    </div>
   );
 };
 

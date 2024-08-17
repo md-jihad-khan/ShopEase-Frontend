@@ -6,7 +6,7 @@ const Navbar = () => {
   const { user, logOut } = useContext(AuthContext);
 
   return (
-    <div className="bg-base-100 fixed backdrop-blur-md container py-4 px-2 ">
+    <div className="bg-base-100 fixed backdrop-blur-md container  py-4 px-2 ">
       <div>
         <div className="flex justify-between w-full  ">
           <div className="">
